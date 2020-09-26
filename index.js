@@ -39,7 +39,7 @@ let parseInteger = (number) => {
         if(parse){
             return parse;
         }else{
-            alert('Error, argument is not a number');
+            alert('Error, argument is not a number ' + number);
         }
     }
 };
@@ -123,6 +123,7 @@ let operate = (operator, num1, num2=0) => {
             calculation = invertSign(num1);
             break;
         default:
+            console.log(currValues);
             alert('Error, Invalid Operator');
             return false;
     }
@@ -178,14 +179,18 @@ let createListeners = () =>{
 
 /*
 */
-let updateCurrValues = (operator, calculation=null) => {
+let updateCurrValues = (operator, calculation) => {
     if(operator){  
+        if(currValues.operator){
+            currValues.num1 = calculation;
+            currValues.num2 = null;
+        }
         currValues.operator = operator;
     }else{
         if(!currValues.operator){
-            currValues.num1 = screenValue;
+            currValues.num1 = Number.parseInt(screenValue);
         }else{
-            currValues.num2 = screenValue;
+            currValues.num2 = Number.parseInt(screenValue);
         }
     }
 }
@@ -198,6 +203,9 @@ let runFunction = (option) => {
             clear();
             break;
         case option === 'invertSign':
+            if(screenValue.toString.length === 9 ){
+                screnValue = screenValue.substring(0, str.length() - 1);
+            }
             screenValue = operate(option, screenValue);
             updateScreen();
             updateCurrValues(false);
@@ -211,6 +219,7 @@ let runFunction = (option) => {
 *if not then it will add number to string and update the screen and the stored currValues
 */
 let updateNumbers = (number) => {
+    screenValue = screenValue + '';
     if(screenValue.length < 9){
         if(screenValue === '0' || (currValues.operator && currValues.num2 === null)){
             screenValue = number;
@@ -225,12 +234,13 @@ let updateNumbers = (number) => {
 /*Takes in one operator as a param. 
 */
 let runOperator = (operator) => {
-    if(currValues.num2 === null && currValues.calculation === null){
-        updateCurrValues(operator);
+    if((currValues.num2 === null && currValues.calculation === null) || currValues.operator === 'equal'){
+        updateCurrValues(operator, currValues.calculation);
     } else{
         currValues.calculation = operate(currValues.operator, currValues.num1, currValues.num2);
         screenValue = currValues.calculation;
         updateScreen();
+        updateCurrValues(operator, currValues.calculation);
     }
 };
 
