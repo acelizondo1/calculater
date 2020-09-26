@@ -20,7 +20,7 @@ let currValues = {
 *Returns if both numbers are integers
 */
 let isInteger = (num1, num2=0) =>{
-    if(Number(num1) && Number(num2)){
+    if(Number(num1) && (Number(num2) || num2 === 0)){
         return true;
     } else{
         alert('Error, one or more parameters are not integers');
@@ -36,10 +36,10 @@ let parseInteger = (number) => {
         return number;
     }else{
         let parse = Number(number);
-        if(parse){
+        if(parse || parse === 0){
             return parse;
         }else{
-            alert('Error, argument is not a number ' + number);
+            alert('Error, argument is not a number ');
         }
     }
 };
@@ -149,6 +149,20 @@ let clear = () =>{
     updateScreen();
 };
 
+/*
+*/
+let deleteNumber = () =>{
+    if(currValues.calculation === null){
+        screenValue = screenValue.toString();
+        screenValue = screenValue.substring(0, screenValue.length - 1);
+        if (screenValue === ''){
+            screenValue = '0';
+        }
+        updateScreen();
+        updateCurrValues(false);
+    }
+};
+
 /*Creates listener for every button
 *Runs processing of the click based off of its button's grouping
 */
@@ -203,13 +217,14 @@ let runFunction = (option) => {
             break;
         case option === 'invertSign':
             if(screenValue.toString.length === 9 ){
-                screnValue = screenValue.substring(0, str.length() - 1);
+                screenValue = screenValue.toString.substring(0, screenValue.toString.length() - 1);
             }
             screenValue = operate(option, screenValue);
             updateScreen();
             updateCurrValues(false);
             break;
         case option === 'delete':
+            deleteNumber();
             break;
     }
 };  
