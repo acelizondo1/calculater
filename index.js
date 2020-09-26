@@ -8,8 +8,9 @@ const options = document.querySelectorAll('.option');
 let screenValue = "0";
 let currValues = {
     num1: 0,
-    num2: 0,
+    num2: null,
     operator: null,
+    calculation: null,
 };
 
 
@@ -92,7 +93,7 @@ let divide = (num1, num2) =>{
 *Returns error if false, returns inver if true
 */
 let invertSign = (num) =>{
-    if(isInteger(num1)){
+    if(isInteger(num)){
         return num * -1;
     }    
 };
@@ -140,10 +141,11 @@ let updateScreen = () =>{
 *Runs updateScreen
 */
 let clear = () =>{
-    screenValue = 0;
+    screenValue = '0';
     currValues.num1 = 0;
-    currValues.num2 = 0;
+    currValues.num2 = null;
     currValues.operator = null;
+    currValues.calculation = null;
     updateScreen();
 };
 
@@ -174,6 +176,19 @@ let createListeners = () =>{
 
 };
 
+/*
+*/
+let updateCurrValues = (operator, calculation=null) => {
+    if(operator){  
+        currValues.operator = operator;
+    }else{
+        if(!currValues.operator){
+            currValues.num1 = screenValue;
+        }else{
+            currValues.num2 = screenValue;
+        }
+    }
+}
 
 /*
 */
@@ -185,35 +200,38 @@ let runFunction = (option) => {
         case option === 'invertSign':
             screenValue = operate(option, screenValue);
             updateScreen();
+            updateCurrValues(false);
             break;
         case option === 'delete':
             break;
     }
 };  
 
-/*
+/*Takes in one parameter, checks if screen number is longer than 9 digits
+*if not then it will add number to string and update the screen and the stored currValues
 */
 let updateNumbers = (number) => {
     if(screenValue.length < 9){
-        if(screenValue === '0'){
+        if(screenValue === '0' || (currValues.operator && currValues.num2 === null)){
             screenValue = number;
         }else{
             screenValue = screenValue + number;
         }
         updateScreen();
+        updateCurrValues(false);
     }
-    if(!screenData.operator){
-        screenData.num1 = screenValue;
-    }else{
-        screenData.num2 = screenValue;
-    }
-};
+}
 
-/*
+/*Takes in one operator as a param. 
 */
 let runOperator = (operator) => {
-    
-
+    if(currValues.num2 === null && currValues.calculation === null){
+        updateCurrValues(operator);
+    } else{
+        currValues.calculation = operate(currValues.operator, currValues.num1, currValues.num2);
+        screenValue = currValues.calculation;
+        updateScreen();
+    }
 };
 
 createListeners();
