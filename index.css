@@ -43,7 +43,7 @@ body{
     width: 100%;
     height: 375px;
     grid-template-areas:
-        'clear toggle percentage divide'
+        'clear toggle delete divide'
         'seven eight nine multiply'
         'four five six subtract'
         'one two three addition'
@@ -79,8 +79,9 @@ button{
     grid-area: toggle;
 }
 
-#percentage{
-    grid-area: percentage;
+#delete{
+    grid-area: delete;
+    font-size: 18px;
 }
 
 #divide{
