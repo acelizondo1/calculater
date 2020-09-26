@@ -20,10 +20,10 @@ let currValues = {
 *Returns if both numbers are integers
 */
 let isInteger = (num1, num2=0) =>{
-    if(Number.isInteger(num1) && Number.isInteger(num2)){
+    if(Number(num1) && Number(num2)){
         return true;
     } else{
-        alert('Error, one or more parametes are not integers');
+        alert('Error, one or more parameters are not integers');
         return false;
     }
 };
@@ -32,10 +32,10 @@ let isInteger = (num1, num2=0) =>{
 *Returns true if conversion can be made or else alerts error
 */
 let parseInteger = (number) => {
-    if(Number.isInteger(number)){
+    if(Number(number)){
         return number;
     }else{
-        let parse = Number.parseInt(number);
+        let parse = Number(number);
         if(parse){
             return parse;
         }else{
@@ -123,7 +123,6 @@ let operate = (operator, num1, num2=0) => {
             calculation = invertSign(num1);
             break;
         default:
-            console.log(currValues);
             alert('Error, Invalid Operator');
             return false;
     }
@@ -188,9 +187,9 @@ let updateCurrValues = (operator, calculation) => {
         currValues.operator = operator;
     }else{
         if(!currValues.operator){
-            currValues.num1 = Number.parseInt(screenValue);
+            currValues.num1 = Number(screenValue);
         }else{
-            currValues.num2 = Number.parseInt(screenValue);
+            currValues.num2 = Number(screenValue);
         }
     }
 }
@@ -244,4 +243,5 @@ let runOperator = (operator) => {
     }
 };
 
+//Starts button listeners
 createListeners();
